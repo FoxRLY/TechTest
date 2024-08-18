@@ -1,0 +1,51 @@
+server:
+  port: 8090
+spring:
+  application:
+    name: tech
+  datasource:
+    url: jdbc:postgresql://localhost:5432/database
+    username: tech
+    password: tech
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: Spring-Client
+            authorization-grant-type: authorization_code
+            scope: openid
+            redirect-uri: "http://localhost:8090/auth/user-check"
+            client-name: keycloak
+            provider: keycloak
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8080/realms/Tech
+            user-name-attribute: preferred_username
+            token-uri: http://localhost:8080/realms/Tech/protocol/openid-connect/token
+            user-info-uri: http://localhost:8080/realms/Tech/protocol/openid-connect/userinfo
+            authorization-uri: http://localhost:8080/realms/Tech/protocol/openid-connect/auth
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/Tech
+keycloak:
+  clientId: Spring-Client
+  admin:
+    password: password
+    user: admin
+    url: http://localhost:8080/realms/master/protocol/openid-connect/token
+  resource:
+    url: http://localhost:8080/realms/Tech/protocol/openid-connect/token
+  grant:
+    type: password
+
+
+
+
